@@ -629,6 +629,40 @@ h1, h2, h3 {
   color: var(--color-green);
 }
 
+/* ===== PRODUTOS VIEW TOGGLE ===== */
+.produtos-view-toggle {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 50px;
+  background: var(--color-cream);
+  color: var(--color-text-light);
+  font-family: 'Lora', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.view-btn.active {
+  background: var(--color-accent);
+  color: var(--color-white);
+  border-color: var(--color-accent);
+}
+
+.produtos-carousel-wrapper {
+  position: relative;
+}
+
 /* ===== PROCESSO ===== */
 .processo {
   background: var(--color-bg-alt);
@@ -1109,7 +1143,67 @@ h1, h2, h3 {
     grid-template-columns: 1fr;
   }
 
+  .produtos-view-toggle {
+    display: flex;
+  }
+
   .produtos-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  /* Carousel mode (default on mobile) */
+  .produtos-grid.carousel-mode {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    max-width: 100%;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .produtos-grid.carousel-mode::-webkit-scrollbar {
+    display: none;
+  }
+
+  .produtos-grid.carousel-mode .produto-card {
+    min-width: 280px;
+    max-width: 300px;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+  }
+
+  /* Carousel indicators */
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-border);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+
+  .carousel-dot.active {
+    background: var(--color-accent);
+    width: 24px;
+    border-radius: 4px;
+  }
+
+  /* List mode */
+  .produtos-grid.list-mode {
+    display: grid;
     grid-template-columns: 1fr;
     max-width: 400px;
     margin: 0 auto;

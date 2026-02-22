@@ -79,6 +79,102 @@ form.addEventListener('submit', (e) => {
   `;
 });
 
+// ===== Produtos carousel / list toggle (mobile) =====
+const produtosGrid = document.querySelector('.produtos-grid');
+const viewBtns = document.querySelectorAll('.view-btn');
+const carouselWrapper = document.querySelector('.produtos-carousel-wrapper');
+
+function isMobile() {
+  return window.innerWidth <= 768;
+}
+
+function createIndicators() {
+  const existing = carouselWrapper.querySelector('.carousel-indicators');
+  if (existing) existing.remove();
+
+  if (!produtosGrid.classList.contains('carousel-mode')) return;
+
+  const cards = produtosGrid.querySelectorAll('.produto-card');
+  const indicators = document.createElement('div');
+  indicators.className = 'carousel-indicators';
+
+  cards.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', `Produto ${i + 1}`);
+    dot.addEventListener('click', () => {
+      cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
+    indicators.appendChild(dot);
+  });
+
+  carouselWrapper.appendChild(indicators);
+}
+
+function updateIndicators() {
+  const dots = carouselWrapper.querySelectorAll('.carousel-dot');
+  if (!dots.length) return;
+
+  const cards = produtosGrid.querySelectorAll('.produto-card');
+  const gridRect = produtosGrid.getBoundingClientRect();
+  const center = gridRect.left + gridRect.width / 2;
+
+  let closestIndex = 0;
+  let closestDist = Infinity;
+
+  cards.forEach((card, i) => {
+    const cardRect = card.getBoundingClientRect();
+    const cardCenter = cardRect.left + cardRect.width / 2;
+    const dist = Math.abs(cardCenter - center);
+    if (dist < closestDist) {
+      closestDist = dist;
+      closestIndex = i;
+    }
+  });
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === closestIndex);
+  });
+}
+
+function setView(mode) {
+  if (mode === 'carousel' && isMobile()) {
+    produtosGrid.classList.add('carousel-mode');
+    produtosGrid.classList.remove('list-mode');
+    createIndicators();
+  } else {
+    produtosGrid.classList.remove('carousel-mode');
+    produtosGrid.classList.add('list-mode');
+    const indicators = carouselWrapper.querySelector('.carousel-indicators');
+    if (indicators) indicators.remove();
+  }
+}
+
+viewBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    viewBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setView(btn.dataset.view);
+  });
+});
+
+produtosGrid.addEventListener('scroll', updateIndicators);
+
+// Initialize on load and resize
+function initProdutosView() {
+  const activeBtn = document.querySelector('.view-btn.active');
+  if (isMobile()) {
+    setView(activeBtn ? activeBtn.dataset.view : 'carousel');
+  } else {
+    produtosGrid.classList.remove('carousel-mode', 'list-mode');
+    const indicators = carouselWrapper.querySelector('.carousel-indicators');
+    if (indicators) indicators.remove();
+  }
+}
+
+initProdutosView();
+window.addEventListener('resize', initProdutosView);
+
 // ===== Smooth scroll for anchor links =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', (e) => {
