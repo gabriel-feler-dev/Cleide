@@ -49,11 +49,27 @@ const observer = new IntersectionObserver((entries) => {
 
 // Aplicar fade-in nos elementos
 document.querySelectorAll(
-  '.sobre-grid, .diff-card, .produto-card, .processo-step, .depoimento-card, .contato-grid, .section-header'
+  '.sobre-grid, .diff-card, .processo-step, .depoimento-card, .contato-grid, .section-header'
 ).forEach(el => {
   el.classList.add('fade-in');
   observer.observe(el);
 });
+
+// Produtos: observar o wrapper — quando visível, todos os cards aparecem de uma vez
+const produtosWrapper = document.querySelector('.produtos-carousel-wrapper');
+if (produtosWrapper) {
+  const produtoCards = produtosWrapper.querySelectorAll('.produto-card');
+  produtoCards.forEach(el => el.classList.add('fade-in'));
+  const produtosObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        produtoCards.forEach(el => el.classList.add('visible'));
+        produtosObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+  produtosObserver.observe(produtosWrapper);
+}
 
 // ===== Form handling =====
 const form = document.getElementById('contatoForm');
