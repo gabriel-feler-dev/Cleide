@@ -1157,12 +1157,15 @@ h1, h2, h3 {
   .produtos-grid.carousel-mode {
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
     scroll-snap-type: x mandatory;
     gap: 16px;
     max-width: 100%;
-    padding-bottom: 12px;
+    padding: 0 20px 12px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
   }
 
   .produtos-grid.carousel-mode::-webkit-scrollbar {
@@ -1170,10 +1173,10 @@ h1, h2, h3 {
   }
 
   .produtos-grid.carousel-mode .produto-card {
-    min-width: 280px;
-    max-width: 300px;
+    min-width: 68vw;
+    max-width: 68vw;
     flex-shrink: 0;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
   }
 
   /* Carousel indicators */
