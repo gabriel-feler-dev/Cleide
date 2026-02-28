@@ -569,9 +569,17 @@ h1, h2, h3 {
 }
 
 .produtos-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 28px;
+  justify-content: center;
+}
+
+.produto-foto {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
 }
 
 .produto-card {
@@ -580,6 +588,7 @@ h1, h2, h3 {
   overflow: hidden;
   border: 1px solid var(--color-border);
   transition: transform var(--transition), box-shadow var(--transition);
+  flex: 0 0 calc((100% - 56px) / 3);
 }
 
 .produto-card:hover {
@@ -1065,8 +1074,8 @@ h1, h2, h3 {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .produtos-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .produto-card {
+    flex: 0 0 calc((100% - 28px) / 2);
   }
 
   .processo-grid {
@@ -1157,14 +1166,18 @@ h1, h2, h3 {
   }
 
   .produtos-grid {
-    grid-template-columns: 1fr;
     max-width: 400px;
     margin: 0 auto;
+  }
+
+  .produto-card {
+    flex: 0 0 100%;
   }
 
   /* Carousel mode (default on mobile) */
   .produtos-grid.carousel-mode {
     display: flex;
+    flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
@@ -1175,6 +1188,7 @@ h1, h2, h3 {
     scrollbar-width: none;
     touch-action: pan-x pan-y;
     overscroll-behavior-x: contain;
+    justify-content: flex-start;
   }
 
   .produtos-grid.carousel-mode::-webkit-scrollbar {
@@ -1182,9 +1196,9 @@ h1, h2, h3 {
   }
 
   .produtos-grid.carousel-mode .produto-card {
+    flex: 0 0 68vw;
     min-width: 68vw;
     max-width: 68vw;
-    flex-shrink: 0;
     scroll-snap-align: start;
   }
 
