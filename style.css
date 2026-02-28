@@ -1202,6 +1202,18 @@ h1, h2, h3 {
     scroll-snap-align: start;
   }
 
+  .produtos-grid.carousel-mode .produto-foto {
+    height: 190px;
+  }
+
+  .produtos-grid.carousel-mode .produto-info {
+    padding: 16px;
+  }
+
+  .produtos-grid.carousel-mode .produto-info p {
+    font-size: 0.85rem;
+  }
+
   /* Carousel indicators */
   .carousel-indicators {
     display: flex;
