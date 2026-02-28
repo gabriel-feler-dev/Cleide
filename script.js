@@ -257,6 +257,7 @@ const produtosData = [
 
 const modalOverlay  = document.getElementById('produtoModal');
 const modalClose    = document.getElementById('modalClose');
+const modalFecharBtn = document.getElementById('modalFecharBtn');
 const modalImg      = document.getElementById('modalImg');
 const modalBadge    = document.getElementById('modalBadge');
 const modalNome     = document.getElementById('modalNome');
@@ -324,6 +325,7 @@ document.querySelectorAll('.produto-card[data-produto]').forEach(card => {
 
 // Fechar
 modalClose.addEventListener('click', fecharModal);
+modalFecharBtn.addEventListener('click', fecharModal);
 
 modalOverlay.addEventListener('click', (e) => {
   if (e.target === modalOverlay) fecharModal();
