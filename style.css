@@ -1018,6 +1018,426 @@ h1, h2, h3 {
   box-shadow: 0 6px 28px rgba(37, 211, 102, 0.5);
 }
 
+/* ===== "VER MAIS" NOS CARDS ===== */
+.produto-ver-mais {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-green);
+  letter-spacing: 0.5px;
+  transition: gap var(--transition), color var(--transition);
+  cursor: pointer;
+}
+
+.produto-card:hover .produto-ver-mais {
+  color: var(--color-accent);
+}
+
+.produto-card {
+  cursor: pointer;
+}
+
+/* ===== MODAL PRODUTO ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background: rgba(35, 28, 22, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-container {
+  background: var(--color-cream);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 660px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(60px) scale(0.95);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.46, 0.64, 1), opacity 0.35s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+  box-shadow: 0 24px 80px rgba(35, 28, 22, 0.35);
+}
+
+.modal-overlay.active .modal-container {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.modal-container::-webkit-scrollbar {
+  width: 4px;
+}
+.modal-container::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+/* Botão fechar */
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(250, 246, 241, 0.9);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: all var(--transition);
+  backdrop-filter: blur(4px);
+}
+
+.modal-close:hover {
+  background: var(--color-accent);
+  color: var(--color-white);
+  border-color: var(--color-accent);
+  transform: rotate(90deg);
+}
+
+/* Imagem */
+.modal-img-wrap {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1);
+  transition: transform 8s ease;
+}
+
+.modal-overlay.active .modal-img {
+  transform: scale(1.06);
+}
+
+.modal-img-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(255, 248, 239, 0.85) 85%,
+    var(--color-cream) 100%
+  );
+}
+
+.modal-badge-modal {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--color-green);
+  color: var(--color-white);
+  padding: 5px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: none;
+}
+
+.modal-badge-modal.visible {
+  display: inline-block;
+  animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+
+/* Folhas flutuantes dentro da modal */
+.modal-leaves-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.modal-leaf {
+  position: absolute;
+  opacity: 0;
+  animation: modalLeafFloat linear infinite;
+}
+
+.mleaf-1 {
+  width: 70px;
+  left: 8%;
+  bottom: -80px;
+  animation-duration: 14s;
+  animation-delay: 0.5s;
+  transform: rotate(20deg);
+}
+
+.mleaf-2 {
+  width: 50px;
+  right: 12%;
+  bottom: -60px;
+  animation-duration: 18s;
+  animation-delay: 3s;
+  transform: rotate(-25deg);
+}
+
+.mleaf-3 {
+  width: 40px;
+  left: 40%;
+  bottom: -50px;
+  animation-duration: 22s;
+  animation-delay: 7s;
+  transform: rotate(10deg);
+}
+
+@keyframes modalLeafFloat {
+  0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.7; }
+  100% { opacity: 0; transform: translateY(-280px) rotate(180deg); }
+}
+
+/* Corpo da modal */
+.modal-body {
+  padding: 8px 36px 36px;
+}
+
+/* Decoração topo */
+.modal-deco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-deco-line {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+  max-width: 80px;
+}
+
+.modal-deco-icon {
+  color: var(--color-green);
+  font-size: 1.3rem;
+  animation: spinSlow 12s linear infinite;
+}
+
+@keyframes spinSlow {
+  0%   { transform: rotate(0deg); }
+  50%  { transform: rotate(15deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Nome do produto */
+.modal-nome {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+/* Resumo */
+.modal-resumo {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: linear-gradient(135deg, var(--color-bg-alt), var(--color-bg));
+  border-left: 3px solid var(--color-green);
+  border-radius: 0 12px 12px 0;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+}
+
+.modal-resumo-estrela {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.modal-resumo p {
+  font-size: 1rem;
+  color: var(--color-text);
+  font-style: italic;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Seção ingredientes */
+.modal-ing-section {
+  margin-bottom: 28px;
+}
+
+.modal-ing-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-ing-title svg {
+  color: var(--color-green);
+}
+
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.modal-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text);
+  opacity: 0;
+  transform: translateY(12px) scale(0.9);
+  animation: tagEntrada 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  cursor: default;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.modal-tag:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--color-green);
+}
+
+.modal-tag-icone {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+@keyframes tagEntrada {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes badgePop {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Separador */
+.modal-sep {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.modal-sep-line {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.modal-sep-text {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.05rem;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* Descrição detalhada */
+.modal-descricao {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  line-height: 1.85;
+  margin-bottom: 32px;
+}
+
+.modal-descricao strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* CTA */
+.modal-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--color-green);
+  border-color: var(--color-green);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px;
+  border-radius: 50px;
+  color: var(--color-white);
+  transition: all var(--transition);
+}
+
+.modal-cta:hover {
+  background: transparent;
+  color: var(--color-green);
+}
+
+/* Responsive modal */
+@media (max-width: 600px) {
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal-container {
+    max-height: 94vh;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+  }
+
+  .modal-overlay.active .modal-container {
+    transform: translateY(0);
+  }
+
+  .modal-img-wrap {
+    height: 210px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .modal-body {
+    padding: 8px 20px 32px;
+  }
+
+  .modal-nome {
+    font-size: 1.4rem;
+  }
+}
+
 /* ===== ANIMATIONS ===== */
 .fade-in {
   opacity: 0;

@@ -191,6 +191,148 @@ function initProdutosView() {
 initProdutosView();
 window.addEventListener('resize', initProdutosView);
 
+// ===== MODAL PRODUTO =====
+const produtosData = [
+  {
+    nome: 'Frutas Vermelhas e Rosas',
+    imagem: 'assets/images/frutas_vermelhas_e_rosas.png',
+    badge: 'Mais vendido',
+    resumo: 'Uma explosão sensorial de frutas vermelhas com um toque delicado de rosas. Hidratante, revigorante e perfeito para massagens relaxantes — deixa a pele suave, perfumada e revitalizada.',
+    ingredientes: [
+      { icone: '🍓', nome: 'Frutas Vermelhas' },
+      { icone: '🌹', nome: 'Rosas Vermelhas' },
+      { icone: '💝', nome: 'Corações Ocultos' }
+    ],
+    descricao: 'As <strong>frutas vermelhas</strong> — como morango, mirtilo e framboesa — são naturalmente ricas em vitaminas C e E e em antioxidantes que combatem os radicais livres, protegem as células da pele e estimulam a renovação celular, conferindo mais luminosidade e uniformidade ao tom da pele. As <strong>rosas vermelhas</strong>, além do perfume envolvente e romântico, possuem propriedades anti-inflamatórias e calmantes que ajudam a reduzir a vermelhidão e a irritação, sendo especialmente benéficas para peles sensíveis. Os <strong>corações ocultos</strong> no interior do sabonete liberam uma carga extra de hidratantes no momento do uso, prolongando a maciez e o frescor ao longo do dia. O conjunto é ideal para massagens, pois combina o relaxamento do aroma com o cuidado nutritivo da fórmula.'
+  },
+  {
+    nome: 'Lavanda',
+    imagem: 'assets/images/lavanda.jpeg',
+    badge: null,
+    resumo: 'A leveza da lavanda unida ao poder nutritivo do óleo de argan e da glicerina vegetal. Um sabonete calmante, ideal para peles secas ou sensíveis, que hidrata profundamente e deixa um perfume suave e duradouro.',
+    ingredientes: [
+      { icone: '🌸', nome: 'Lavanda' },
+      { icone: '💧', nome: 'Glicerina Vegetal' },
+      { icone: '🌰', nome: 'Óleo de Argan' }
+    ],
+    descricao: 'A <strong>lavanda</strong> é conhecida por suas propriedades relaxantes e calmantes: seu aroma atua diretamente sobre o sistema nervoso, reduzindo o estresse e promovendo bem-estar durante o banho. Na pele, possui ação antibacteriana e anti-inflamatória suave, auxiliando no controle de irritações e pequenas imperfeições. A <strong>glicerina vegetal</strong> é um umectante poderoso — atrai moléculas de água para as camadas superficiais da pele, mantendo-a hidratada por horas após o uso. O <strong>óleo de argan</strong>, rico em ácidos graxos essenciais (ômega 6 e 9) e vitamina E, penetra profundamente na pele, restaurando a barreira cutânea, combatendo o ressecamento e conferindo maciez, elasticidade e um aspecto saudável. A combinação dos três torna este sabonete especialmente indicado para peles secas, sensíveis ou que necessitam de cuidado extra no dia a dia.'
+  },
+  {
+    nome: 'Maçã Verde e Maracujá',
+    imagem: 'assets/images/maca_verde_e_maracuja.jpeg',
+    badge: null,
+    resumo: 'Frescor e nutrição em equilíbrio perfeito. A leveza da maçã verde encontra a suavidade do maracujá para oferecer hidratação profunda, renovação da pele e uma fragrância frutal revigorante.',
+    ingredientes: [
+      { icone: '🍏', nome: 'Maçã Verde' },
+      { icone: '🌕', nome: 'Maracujá' },
+      { icone: '🌱', nome: 'Sementes de Maracujá' }
+    ],
+    descricao: 'A <strong>maçã verde</strong> é rica em ácido málico, um alfa-hidroxiácido (AHA) de ação suave que auxilia na esfoliação química da pele — desobstruindo poros, refinando a textura e estimulando a renovação celular. Também fornece vitaminas C e B, que contribuem para o clareamento de manchas e para a proteção antioxidante. O <strong>maracujá</strong> é excepcionalmente hidratante: seu óleo é rico em ácido linoleico (ômega 6), que restaura a barreira lipídica da pele, prevenindo a perda de água e conferindo maciez imediata. As <strong>sementes secas de maracujá</strong>, presentes na formulação, realizam uma esfoliação física suave que remove as células mortas, revelando uma pele mais lisa e com maior luminosidade. O resultado é uma pele nutrida, renovada e envolta em um perfume tropical e refrescante.'
+  },
+  {
+    nome: 'Flor de Laranjeira e Rosas',
+    imagem: 'assets/images/flor_de_laranjeira_e_rosas.jpeg',
+    badge: null,
+    resumo: 'Uma combinação floral sofisticada com benefícios reais para a pele. A delicadeza da flor de laranjeira e o poder das rosas se unem à vitamina B para hidratar, renovar e proteger com frescor e suavidade.',
+    ingredientes: [
+      { icone: '🌸', nome: 'Flor de Laranjeira' },
+      { icone: '🌹', nome: 'Rosas Vermelhas' },
+      { icone: '✨', nome: 'Vitamina B' }
+    ],
+    descricao: 'A <strong>flor de laranjeira</strong> (neroli) é um ingrediente clássico da cosmética natural: possui ação calmante e levemente sedativa, reduzindo vermelhidão e irritação cutânea. Seu aroma delicado e cítrico-floral tem efeito relaxante comprovado, sendo muito valorizado em rituais de beleza e bem-estar. As <strong>rosas vermelhas</strong> contribuem com polifenóis e flavonoides de forte ação antioxidante, que protegem a pele do envelhecimento precoce causado por exposição ambiental. Também têm propriedade tonificante, auxiliando na firmeza e na uniformidade da pele. A <strong>vitamina B</strong> — em suas formas como niacinamida (B3) ou pantenol (B5) — age diretamente na hidratação profunda, fortalece a barreira cutânea, reduz poros dilatados e melhora a textura geral da pele ao longo do uso contínuo. Este sabonete é ideal para quem busca um cuidado completo com um toque floral revitalizante e sofisticado.'
+  },
+  {
+    nome: 'Mel, Aloe Vera e Capim-Limão',
+    imagem: 'assets/images/mel_aloe_vera_e%20capim_lim%C3%A3o.png',
+    badge: null,
+    resumo: 'Uma fusão de ingredientes da natureza que nutre, refresca e revitaliza. O dulçor do mel encontra o frescor do capim-limão e o poder calmante do aloe vera para deixar a pele profundamente hidratada, macia e com um perfume suave e acolhedor.',
+    ingredientes: [
+      { icone: '🍯', nome: 'Mel' },
+      { icone: '🌵', nome: 'Aloe Vera' },
+      { icone: '🍃', nome: 'Capim-Limão' }
+    ],
+    descricao: 'O <strong>mel</strong> é um dos hidratantes naturais mais completos: rico em açúcares naturais (frutose e glicose), aminoácidos e enzimas, ele atua como umectante, retendo a umidade na pele e evitando o ressecamento. Suas propriedades antibacterianas e cicatrizantes auxiliam no tratamento de pequenas irritações e deixam a pele com uma maciez incomparável. O <strong>aloe vera</strong> (babosa) é conhecido por sua ação calmante e regeneradora: seu gel é repleto de vitaminas (A, C, E e B12), minerais e polissacarídeos que hidratam as camadas mais profundas da pele, reduzem inflamações e aceleram a recuperação de peles irritadas ou ressecadas, sendo especialmente indicado para peles sensíveis. O <strong>capim-limão</strong> traz leveza e frescor à fórmula: com propriedades antibacterianas e antifúngicas naturais, purifica a pele ao mesmo tempo em que confere um perfume cítrico suave e revigorante que persiste após o banho. A união dos três ingredientes resulta em um sabonete equilibrado, capaz de hidratar com profundidade sem pesar — ideal para o uso diário de toda a família.'
+  }
+];
+
+const modalOverlay  = document.getElementById('produtoModal');
+const modalClose    = document.getElementById('modalClose');
+const modalImg      = document.getElementById('modalImg');
+const modalBadge    = document.getElementById('modalBadge');
+const modalNome     = document.getElementById('modalNome');
+const modalResumo   = document.getElementById('modalResumo');
+const modalTags     = document.getElementById('modalTags');
+const modalDescricao = document.getElementById('modalDescricao');
+
+function abrirModal(index) {
+  const p = produtosData[index];
+  if (!p) return;
+
+  // Preenche conteúdo
+  modalImg.src = p.imagem;
+  modalImg.alt = p.nome;
+  modalNome.textContent = p.nome;
+  modalResumo.textContent = p.resumo;
+  modalDescricao.innerHTML = p.descricao;
+
+  // Badge
+  if (p.badge) {
+    modalBadge.textContent = p.badge;
+    modalBadge.classList.add('visible');
+  } else {
+    modalBadge.textContent = '';
+    modalBadge.classList.remove('visible');
+  }
+
+  // Tags de ingredientes com animação escalonada
+  modalTags.innerHTML = '';
+  p.ingredientes.forEach((ing, i) => {
+    const tag = document.createElement('span');
+    tag.className = 'modal-tag';
+    tag.style.animationDelay = `${0.15 + i * 0.1}s`;
+    tag.innerHTML = `<span class="modal-tag-icone" aria-hidden="true">${ing.icone}</span>${ing.nome}`;
+    modalTags.appendChild(tag);
+  });
+
+  // Abre a modal
+  document.body.style.overflow = 'hidden';
+  modalOverlay.classList.add('active');
+  modalOverlay.querySelector('.modal-container').scrollTop = 0;
+
+  // Foca no botão fechar (acessibilidade)
+  setTimeout(() => modalClose.focus(), 400);
+}
+
+function fecharModal() {
+  modalOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Abrir ao clicar no card
+document.querySelectorAll('.produto-card[data-produto]').forEach(card => {
+  card.addEventListener('click', () => {
+    abrirModal(Number(card.dataset.produto));
+  });
+  // Acessibilidade: abrir com Enter ou Espaço
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      abrirModal(Number(card.dataset.produto));
+    }
+  });
+});
+
+// Fechar
+modalClose.addEventListener('click', fecharModal);
+
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) fecharModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modalOverlay.classList.contains('active')) fecharModal();
+});
+
 // ===== Smooth scroll for anchor links =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', (e) => {
