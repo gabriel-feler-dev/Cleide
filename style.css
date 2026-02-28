@@ -1420,6 +1420,77 @@ h1, h2, h3 {
   color: var(--color-white);
 }
 
+/* ===== HINT CLIQUE NOS CARDS ===== */
+.hint-clique {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+.hint-clique.ativo {
+  animation: hint-fade 3.5s ease forwards;
+}
+
+.hint-mao {
+  display: block;
+  filter: drop-shadow(0 0 4px rgba(90,114,71,0.8));
+  opacity: 0.88;
+}
+
+.hint-clique.ativo .hint-mao {
+  animation: mao-click 0.75s ease-in-out 3;
+  animation-delay: 0.5s;
+  animation-fill-mode: both;
+}
+
+.hint-texto {
+  background: rgba(20, 20, 15, 0.82);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1.5px solid #5a7247;
+  letter-spacing: 0.4px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+}
+
+@keyframes hint-fade {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes mao-click {
+  0%, 100% { transform: scale(1) translateY(0); }
+  45%       { transform: scale(0.75) translateY(10px); }
+}
+
+/* ===== FOLHAS EXPLOSÃO ===== */
+.leaf-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 1.6rem;
+  line-height: 1;
+  animation: leaf-fly 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform-origin: center;
+}
+
+@keyframes leaf-fly {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1.2); opacity: 1; }
+  60%  { opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.3); opacity: 0; }
+}
+
 /* Responsive modal */
 @media (max-width: 600px) {
   .modal-overlay {

@@ -335,6 +335,133 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && modalOverlay.classList.contains('active')) fecharModal();
 });
 
+// ===== HINT CLIQUE NOS CARDS =====
+(function () {
+  const secao = document.getElementById('produtos');
+  if (!secao) return;
+
+  // Mão SVG: branca com contorno verde, semi-transparente
+  const SVG_MAO = `<svg class="hint-mao" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32" width="54" height="72" aria-hidden="true">
+    <path d="M9.5 1C8.1 1 7 2.1 7 3.5v10.8C6.4 13.8 5.7 13.5 5 13.5c-1.7 0-3 1.3-3 3V21c0 5.5 4.5 10 10 10h1c5.5 0 10-4.5 10-10v-7.5c0-1.7-1.3-3-3-3-.6 0-1.1.2-1.6.5-.5-.8-1.4-1.5-2.4-1.5-.6 0-1.1.2-1.5.5-.5-.8-1.4-1.5-2.5-1.5V3.5C11 2.1 9.9 1 8.5 1h-1z"
+      fill="white" stroke="#5a7247" stroke-width="1.5" stroke-linejoin="round"/>
+  </svg>`;
+
+  const hint = document.createElement('div');
+  hint.className = 'hint-clique';
+  hint.setAttribute('aria-hidden', 'true');
+  hint.innerHTML = SVG_MAO + '<span class="hint-texto">Clique para mais detalhes</span>';
+  document.body.appendChild(hint);
+
+  const DURACAO = 3500;
+  const FOLHAS  = ['🍃', '🌿', '🍂', '☘️'];
+
+  let hintAtivo  = false;
+  let pendentes  = [];
+  let rafId      = null;
+  let cardAlvo   = null;
+
+  function explodir(x, y) {
+    const count = 16;
+    for (let i = 0; i < count; i++) {
+      const leaf = document.createElement('span');
+      leaf.className = 'leaf-particle';
+      leaf.textContent = FOLHAS[Math.floor(Math.random() * FOLHAS.length)];
+      const angle = (i / count) * 360 + Math.random() * 22 - 11;
+      const dist  = 90 + Math.random() * 90;
+      leaf.style.left = x + 'px';
+      leaf.style.top  = y + 'px';
+      leaf.style.animationDelay = (Math.random() * 60) + 'ms';
+      leaf.style.setProperty('--dx', (Math.cos(angle * Math.PI / 180) * dist) + 'px');
+      leaf.style.setProperty('--dy', (Math.sin(angle * Math.PI / 180) * dist) + 'px');
+      leaf.style.setProperty('--rot', (Math.random() * 900 - 450) + 'deg');
+      document.body.appendChild(leaf);
+      leaf.addEventListener('animationend', () => leaf.remove(), { once: true });
+    }
+  }
+
+  function encontrarCardAlvo() {
+    const cards = Array.from(document.querySelectorAll('.produto-card'));
+    let alvo = cards[0], maxVisivel = 0;
+    cards.forEach(card => {
+      const r = card.getBoundingClientRect();
+      const visivel = Math.max(0, Math.min(r.right, window.innerWidth) - Math.max(r.left, 0));
+      if (visivel > maxVisivel) { maxVisivel = visivel; alvo = card; }
+    });
+    return alvo;
+  }
+
+  function posicionarHint() {
+    if (!cardAlvo) return;
+    const r = cardAlvo.getBoundingClientRect();
+    hint.style.left = (r.left + r.width  / 2) + 'px';
+    hint.style.top  = (r.top  + r.height / 2) + 'px';
+  }
+
+  function iniciarRastreio() {
+    if (rafId) return;
+    function loop() {
+      posicionarHint();
+      rafId = requestAnimationFrame(loop);
+    }
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function pararRastreio() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  }
+
+  function cancelarPendentes() {
+    pendentes.forEach(id => clearTimeout(id));
+    pendentes = [];
+  }
+
+  function mostrarHint() {
+    if (hintAtivo) return;
+    cardAlvo = encontrarCardAlvo();
+    if (!cardAlvo) return;
+    posicionarHint();
+    iniciarRastreio();
+    hintAtivo = true;
+    hint.classList.remove('ativo');
+    void hint.offsetWidth;
+    hint.classList.add('ativo');
+
+    // Folhas sincronizadas com cada pressão da mãozinha
+    // Posição calculada dinamicamente no momento de cada explosão
+    [0, 0.75, 1.5].forEach(offset => {
+      pendentes.push(setTimeout(() => {
+        const r = hint.getBoundingClientRect();
+        explodir(r.left + r.width / 2, r.top + r.height / 2);
+      }, 500 + offset * 750 + 350));
+    });
+
+    pendentes.push(setTimeout(() => {
+      hint.classList.remove('ativo');
+      pararRastreio();
+      hintAtivo = false;
+    }, DURACAO));
+  }
+
+  function cancelarHint() {
+    cancelarPendentes();
+    pararRastreio();
+    hint.classList.remove('ativo');
+    hintAtivo = false;
+  }
+
+  // Toda vez que a seção entra na tela: toca uma vez. Quando sai: reseta.
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        pendentes.push(setTimeout(mostrarHint, 700));
+      } else {
+        cancelarHint();
+      }
+    });
+  }, { threshold: 0.3 }).observe(secao);
+})();
+
+
 // ===== Smooth scroll for anchor links =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', (e) => {
