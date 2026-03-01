@@ -1509,6 +1509,7 @@ h1, h2, h3 {
   border-radius: 50px;
   color: var(--color-white);
   transition: all var(--transition);
+  white-space: nowrap;
 }
 
 .modal-cta:hover {
@@ -1637,6 +1638,16 @@ h1, h2, h3 {
 
   .modal-nome {
     font-size: 1.4rem;
+  }
+
+  .modal-cta-row {
+    gap: 8px;
+  }
+
+  .modal-cta,
+  .modal-fechar-btn {
+    padding: 13px 12px;
+    font-size: 0.875rem;
   }
 }
 
