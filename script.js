@@ -49,7 +49,7 @@ const observer = new IntersectionObserver((entries) => {
 
 // Aplicar fade-in nos elementos
 document.querySelectorAll(
-  '.sobre-grid, .diff-card, .processo-step, .depoimento-card, .contato-grid, .section-header'
+  '.sobre-grid, .diff-card, .processo-step, .faq-item, .depoimento-card, .contato-grid, .section-header'
 ).forEach(el => {
   el.classList.add('fade-in');
   observer.observe(el);
@@ -461,6 +461,26 @@ document.addEventListener('keydown', (e) => {
   }, { threshold: 0.3 }).observe(secao);
 })();
 
+
+// ===== FAQ ACCORDION =====
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+    const answer = btn.nextElementSibling;
+
+    // Fecha todos os outros
+    document.querySelectorAll('.faq-question').forEach(other => {
+      if (other !== btn) {
+        other.setAttribute('aria-expanded', 'false');
+        other.nextElementSibling.classList.remove('open');
+      }
+    });
+
+    // Abre ou fecha o clicado
+    btn.setAttribute('aria-expanded', String(!isOpen));
+    answer.classList.toggle('open', !isOpen);
+  });
+});
 
 // ===== Smooth scroll for anchor links =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
